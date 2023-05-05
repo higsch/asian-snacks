@@ -50,6 +50,7 @@
 
 	img {
 		max-height: 50px;
+		user-select: none;
 	}
 
 	@media (min-width: 600px) {
