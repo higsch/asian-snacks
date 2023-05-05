@@ -1,59 +1,66 @@
 <script>
-	import Counter from './Counter.svelte';
-	import welcome from '$lib/images/svelte-welcome.webp';
-	import welcome_fallback from '$lib/images/svelte-welcome.png';
+	import data from '$lib/data.js';
+	import Counter from '$lib/Lines.svelte';
+
+	const counts = data.map(() => 0);
 </script>
 
 <svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
+	<title>What Asian snack are you?</title>
 </svelte:head>
 
-<section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span>
-
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/+page.svelte</strong>
-	</h2>
-
-	<Counter />
-</section>
+<main>
+	{#each data as { id, imgsrc, color }, i (id)}
+		<button
+			class="category"
+			on:click={() => counts[i]++}
+		>
+			<img src={imgsrc} alt={id} />
+			<Counter
+				n={counts[i]}
+				color={color}
+			/>
+			<span style:color={color}>{counts[i]}</span>
+		</button>
+	{/each}
+</main>
 
 <style>
-	section {
+	main {
+		flex: 1;
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		gap: 8px;
+		width: 100%;
+	}
+
+	button {
+		all: unset;
+		display: flex;
 		align-items: center;
-		flex: 0.6;
+		gap: 16px;
+		cursor: pointer;
 	}
 
-	h1 {
+	.category {
+		display: flex;
 		width: 100%;
+		max-height: 80px;
 	}
 
-	.welcome {
-		display: block;
-		position: relative;
-		width: 100%;
-		height: 0;
-		padding: 0 0 calc(100% * 495 / 2048) 0;
+	img {
+		max-height: 50px;
 	}
 
-	.welcome img {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		top: 0;
-		display: block;
+	@media (min-width: 600px) {
+		img {
+			max-height: 70px;
+		}
+	}
+
+	span {
+		font-family: 'Courier New', Courier, monospace;
+		font-size: 36px;
+		font-weight: bold;
 	}
 </style>
